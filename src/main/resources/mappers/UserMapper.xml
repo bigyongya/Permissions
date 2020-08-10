@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zy.demo.mapper.UserMapper">
+    <resultMap id="resultMap" type="com.zy.demo.pojo.User">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="nickname" property="nickname" />
+        <result column="password" property="password" />
+        <result column="salt" property="salt" />
+        <result column="email" property="email" />
+        <result column="status" property="status" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+    </resultMap>
+    <sql id="sql">
+        id,
+        username,
+        nickname,
+        password,
+        salt,
+        email,
+        status,
+        gmt_create,
+        gmt_modified
+    </sql>
+    <select id="getList" resultMap="resultMap">
+        select <include refid="sql" /> from user
+    </select>
+
+    <select id="getOne" resultMap="resultMap">
+        select <include refid="sql" /> from user where username = #{username}
+    </select>
+</mapper>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../static/css/layui.css" th:href="@{/css/layui.css}">
+    <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
+    <link rel="icon" href="/favicon.ico">
+    <title>管理后台</title>
+</head>
+<body class="login-wrap">
+
+    <div class="login-container">
+        <form class="login-form">
+            <h1><font color="#add8e6"><center>登录</center></font></h1>
+            <div class="input-group">
+                <input type="text" id="username" name="username" v-model="username" class="input-field">
+                <label for="username" class="input-label">
+                    <span class="label-title" v-html="usernameName"></span>
+                </label>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" name="password" v-model="password" class="input-field">
+                <label for="password" class="input-label" >
+                    <span class="label-title" v-html="passwordName"></span>
+                </label>
+            </div>
+            <div class="input-group">
+                <font color="red"><center v-text="info"></center></font>
+            </div>
+            <button type="button" @click="loginUser" class="login-button">登录<i class="ai ai-enter"></i></button>
+        </form>
+    </div>
+</body>
+<script th:src="@{/layui.js}" src="../static/layui.js"></script>
+<script th:src="@{/index.js}" src="../static/index.js" data-main="login"></script>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    var vue = new Vue({
+        el:'.login-container',
+        data:{
+            username:"",
+            password:"",
+            info:"",
+            usernameName:"用户名",
+            passwordName:"密码",
+        },
+        methods: {
+            loginUser(){
+                var self = this;
+                axios.post("/login",{"username":this.username,"password":this.password})
+                    .then(function(res){
+                        if(res.data=="201"){
+                            self.info="用户不存在"
+                        }else if(res.data=="202"){
+                            self.info = "密码不正确"
+                        }else if(res.data=="203"){
+                            self.info = "没有权限";
+                        } else if(res.data=="200"){
+                            //登录成功   转到首页
+                            location.href="/index";
+                        }
+                    },function(err){
+                        console.log(err)
+                    })
+            }
+        },
+        watch: {
+            //使用这个可以监听data中指定数据的变化,然后触发watch中对应的function的处理
+            'username': function (newVal,oldVal) {
+                if(newVal!=""){
+                    this.usernameName=""
+                }else{
+                    this.usernameName="用户名"
+                }
+            },
+            'password': function (newVal,oldVal) {
+                if(newVal!=""){
+                    this.passwordName=""
+                }else{
+                    this.passwordName="密码"
+                }
+            }
+
+        }
+    })
+</script>
+</html>

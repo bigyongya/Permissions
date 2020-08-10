@@ -1,0 +1,23 @@
+server:
+  port: 9090
+
+spring:
+  thymeleaf:
+    enabled: true  #开启thymeleaf视图解析
+    encoding: utf-8  #编码
+    prefix: classpath:/templates/  #前缀
+    cache: false  #是否使用缓存
+    mode: HTML  #严格的HTML语法模式
+    suffix: .html  #后缀名
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shiro?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: root
+mybatis:
+  # mappers 别名扫描
+  type-aliases-package: com.zy.demo.pojo
+  # mapper.xml文件位置,如果没有映射文件，请注释掉
+  mapper-locations: classpath:mappers/*.xml
+  configuration:
+    map-underscore-to-camel-case: true #开启驼峰支持

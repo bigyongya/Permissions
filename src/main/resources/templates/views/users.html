@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../static/css/layui.css" th:href="@{/css/layui.css}"/>
+    <link rel="stylesheet" href="../../static/css/view.css" th:href="@{/css/view.css}"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}"/>
+    <link rel="icon" href="/favicon.ico">
+    <!-- 引入样式 -->
+
+    <title>管理后台</title>
+</head>
+<body>
+<!--<div class="container" style="padding-top: 50px">-->
+    <div class="table-responsive" style="padding-top: 50px">
+        <button type="button" class="layui-btn">新增</button>
+        <table class="table table-bordered">
+            <tr>
+                <th>序号</th>
+                <th>用户名</th>
+                <th>名称</th>
+                <th>邮箱</th>
+                <th>操作</th>
+            </tr>
+            <tr v-for="(user,index) in users">
+                <td>{{index+1}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.nickname}}</td>
+                <td>{{user.email}}</td>
+                <td>
+                    <button type="button" class="layui-btn layui-btn-warm">修改</button>
+                    <button type="button" class="layui-btn layui-btn-danger">删除</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+<!--</div>-->
+
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    var myVeu = new Vue({
+        el: '.table-responsive',
+        data: {
+            users: []
+        },
+        methods: {     //方法全写在methods里面
+
+        },
+        created() {
+            var self = this;
+            axios.post("user/getList", null).then(function (res) {
+                self.users = res.data;
+            }, function (err) {
+            })
+        },
+    })
+</script>
+</body>
+</html>
